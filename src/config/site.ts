@@ -77,10 +77,10 @@ export const images = {
       labelEs: "Proyecto de JV Patios & Stonework",
     },
     {
-      before: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1400&q=80",
-      after: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=80",
-      labelEn: "Severna Park · Front yard hardscape transformation",
-      labelEs: "Severna Park · Transformación del jardín frontal",
+      before: "/images/projects/antes2.png",
+      after: "/images/projects/despues2.jpeg",
+      labelEn: "Project by JV Patios & Stonework",
+      labelEs: "Proyecto de JV Patios & Stonework",
     },
   ],
 } as const;
