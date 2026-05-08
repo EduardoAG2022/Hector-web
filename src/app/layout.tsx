@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Instrument_Serif, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-sans",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -23,7 +31,7 @@ export const metadata: Metadata = {
   description: siteConfig.og.description,
   openGraph: {
     type: "website",
-    locale: "es_ES",
+    locale: "en_US",
     siteName: siteConfig.name,
     description: siteConfig.og.description,
     images: [{ url: siteConfig.og.image, width: 1200, height: 630 }],
@@ -43,8 +51,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      lang="en"
+      className={`${instrumentSerif.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -1,58 +1,79 @@
-import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
-
-interface FooterLink {
-  label: string;
-  href: string;
-}
+import { business, t } from "@/config/site";
+import type { Lang } from "@/config/site";
 
 interface FooterProps {
-  logo?: string;
-  description?: string;
-  links?: ReadonlyArray<FooterLink>;
-  copyright?: string;
+  lang: Lang;
 }
 
-export function Footer({
-  logo = "MiMarca",
-  description = "Descripción breve de tu empresa o proyecto.",
-  links = [],
-  copyright,
-}: FooterProps) {
-  const year = new Date().getFullYear();
+export function Footer({ lang }: FooterProps) {
+  const tr = t[lang];
+
+  const navLinks = [
+    { href: "#services", label: tr.nav.services },
+    { href: "#work", label: tr.nav.work },
+    { href: "#area", label: tr.nav.area },
+    { href: "#reviews", label: tr.nav.reviews },
+    { href: "#contact", label: tr.nav.contact },
+  ];
 
   return (
-    <footer className="bg-muted/30 border-t border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex flex-col md:flex-row justify-between gap-8">
-          <div className="max-w-xs">
-            <p className="text-xl font-bold text-foreground mb-3">{logo}</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {description}
-            </p>
+    <footer className="jv-footer">
+      <div className="jv-container">
+        <div className="jv-footer-grid">
+          <div className="jv-footer-brand">
+            <a href="#" className="jv-logo" style={{ color: "var(--jv-paper)" }}>
+              <span
+                className="jv-logo-mark"
+                style={{ background: "var(--jv-paper)", color: "var(--jv-stone)" }}
+              >
+                jv
+              </span>
+              <span className="jv-logo-text">
+                <span>JV Patios &amp; Stonework</span>
+                <small style={{ color: "var(--jv-on-dark-mute)" }}>
+                  Annapolis · MD · Est. 2004
+                </small>
+              </span>
+            </a>
+            <div className="jv-footer-tagline">{tr.footer.tagline}</div>
+            <div className="jv-footer-cred">{tr.footer.crafted}</div>
           </div>
 
-          {links.length > 0 && (
-            <ul className="flex flex-wrap gap-x-8 gap-y-2 content-start">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+          <div className="jv-footer-col">
+            <h4>{tr.footer.links}</h4>
+            <ul>
+              {navLinks.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href}>{l.label}</a>
                 </li>
               ))}
             </ul>
-          )}
+          </div>
+
+          <div className="jv-footer-col">
+            <h4>{tr.footer.contact}</h4>
+            <ul>
+              <li><a href={`tel:${business.phone1Tel}`}>{business.phone1}</a></li>
+              <li><a href={`tel:${business.phone2Tel}`}>{business.phone2}</a></li>
+              <li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+              <li>{business.address}</li>
+            </ul>
+          </div>
+
+          <div className="jv-footer-col">
+            <h4>{tr.footer.hours}</h4>
+            <ul>
+              <li>{business.hours[lang].weekday}</li>
+              <li>{business.hours[lang].weekend}</li>
+              <li style={{ opacity: 0.5 }}>{business.hours[lang].sunday}</li>
+            </ul>
+          </div>
         </div>
 
-        <Separator className="my-8" />
-
-        <p className="text-xs text-muted-foreground text-center">
-          {copyright ?? `© ${year} ${logo}. Todos los derechos reservados.`}
-        </p>
+        <div className="jv-footer-bottom">
+          <span>{tr.footer.rights}</span>
+          <span>MHIC #142857</span>
+        </div>
       </div>
     </footer>
   );

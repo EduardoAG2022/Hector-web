@@ -1,106 +1,109 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { LinkButton } from "@/components/common";
-import { cn } from "@/lib/utils";
-
-interface NavLink {
-  label: string;
-  href: string;
-}
+import { useState, useEffect } from "react";
+import { business, t } from "@/config/site";
+import type { Lang } from "@/config/site";
 
 interface NavbarProps {
-  logo?: string;
-  links?: ReadonlyArray<NavLink>;
-  ctaLabel?: string;
-  ctaHref?: string;
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  onQuote: () => void;
 }
 
-const defaultLinks: NavLink[] = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Contacto", href: "#contacto" },
-];
+export function Navbar({ lang, setLang, onQuote }: NavbarProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const tr = t[lang];
 
-export function Navbar({
-  logo = "MiMarca",
-  links = defaultLinks,
-  ctaLabel = "Empezar",
-  ctaHref = "#contacto",
-}: NavbarProps) {
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navLinks = [
+    { href: "#services", label: tr.nav.services },
+    { href: "#work", label: tr.nav.work },
+    { href: "#area", label: tr.nav.area },
+    { href: "#reviews", label: tr.nav.reviews },
+    { href: "#contact", label: tr.nav.contact },
+  ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-foreground">
-          {logo}
-        </Link>
+    <>
+      <header className="jv-nav" data-scrolled={scrolled}>
+        <div className="jv-container jv-nav-inner">
+          <a href="#" className="jv-logo">
+            <span className="jv-logo-mark">jv</span>
+            <span className="jv-logo-text">
+              <span>JV Patios &amp; Stonework</span>
+              <small>Annapolis · MD · Est. 2004</small>
+            </span>
+          </a>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-6">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          <nav className="jv-nav-links" aria-label="Primary">
+            {navLinks.map((l) => (
+              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="jv-nav-right">
+            <div className="jv-lang-pill" role="group" aria-label="Language">
+              <button
+                type="button"
+                data-active={lang === "en"}
+                onClick={() => setLang("en")}
               >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden md:block">
-          <LinkButton href={ctaHref} size="sm">
-            {ctaLabel}
-          </LinkButton>
-        </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "md:hidden border-t border-border bg-background transition-all duration-300 overflow-hidden",
-          open ? "max-h-96" : "max-h-0"
-        )}
-      >
-        <ul className="px-4 py-4 flex flex-col gap-4">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setOpen(false)}
+                EN
+              </button>
+              <span className="jv-lang-sep" aria-hidden="true">·</span>
+              <button
+                type="button"
+                data-active={lang === "es"}
+                onClick={() => setLang("es")}
               >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <LinkButton
-              href={ctaHref}
-              size="sm"
-              className="w-full"
-              onClick={() => setOpen(false)}
+                ES
+              </button>
+            </div>
+            <button className="jv-nav-cta" onClick={onQuote}>
+              {tr.nav.quote}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M7 17L17 7M7 7h10v10" />
+              </svg>
+            </button>
+            <button
+              className="jv-menu-btn"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Menu"
             >
-              {ctaLabel}
-            </LinkButton>
-          </li>
-        </ul>
+              {menuOpen ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round">
+                  <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="jv-mobile-menu" data-open={menuOpen}>
+        {navLinks.map((l) => (
+          <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}>
+            {l.label}
+          </a>
+        ))}
+        <div className="jv-mobile-menu-footer">
+          <span style={{ color: "var(--jv-on-dark-green)" }}>{business.phone1}</span>
+          <span>{business.email}</span>
+        </div>
       </div>
-    </header>
+    </>
   );
 }

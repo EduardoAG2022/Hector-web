@@ -1,48 +1,59 @@
-import { ArrowRight } from "lucide-react";
-import { LinkButton } from "@/components/common";
-import { AnimateIn } from "@/components/common";
+"use client";
 
-interface CTAProps {
-  title?: string;
-  description?: string;
-  primaryCta?: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { faq, t } from "@/config/site";
+import type { Lang } from "@/config/site";
+
+interface FAQProps {
+  lang: Lang;
 }
 
-export function CTA({
-  title = "¿Listo para empezar?",
-  description = "Únete a cientos de clientes que ya confían en nosotros.",
-  primaryCta = { label: "Comenzar gratis", href: "#contacto" },
-  secondaryCta,
-}: CTAProps) {
+export function CTA({ lang }: FAQProps) {
+  const tr = t[lang];
+  const items = faq[lang];
+  const [open, setOpen] = useState(0);
+
   return (
-    <section className="py-20 sm:py-28 bg-primary text-primary-foreground">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <AnimateIn className="flex flex-col items-center gap-6">
-          <h2 className="text-3xl sm:text-4xl font-bold">{title}</h2>
-          <p className="text-lg opacity-80 max-w-xl">{description}</p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <LinkButton
-              href={primaryCta.href}
-              size="lg"
-              variant="secondary"
-              className="gap-2"
-            >
-              {primaryCta.label}
-              <ArrowRight size={16} />
-            </LinkButton>
-            {secondaryCta && (
-              <LinkButton
-                href={secondaryCta.href}
-                size="lg"
-                variant="outline"
-                className="border-primary-foreground/40 hover:bg-primary-foreground/10"
+    <section className="jv-section" style={{ background: "var(--jv-paper-2)" }}>
+      <div className="jv-container">
+        <div className="jv-section-head" style={{ maxWidth: "100%" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="jv-eyebrow">{tr.sections.faq.eyebrow}</div>
+          </motion.div>
+          <motion.h2
+            className="jv-h2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {tr.sections.faq.title}
+          </motion.h2>
+        </div>
+
+        <div className="jv-faq">
+          {items.map((item, i) => (
+            <div key={i} className="jv-faq-item" data-open={open === i}>
+              <button
+                type="button"
+                className="jv-faq-q"
+                onClick={() => setOpen(open === i ? -1 : i)}
               >
-                {secondaryCta.label}
-              </LinkButton>
-            )}
-          </div>
-        </AnimateIn>
+                <span>{item.q}</span>
+                <span className="jv-faq-icon">{open === i ? "−" : "+"}</span>
+              </button>
+              <div className="jv-faq-a-wrap">
+                <div className="jv-faq-a">{item.a}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

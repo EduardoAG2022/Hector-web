@@ -1,87 +1,107 @@
-import { AnimateIn } from "@/components/common";
-import { TrendingUp, Target, Users, BarChart3 } from "lucide-react";
+"use client";
 
-const differentiators = [
-  {
-    icon: Target,
-    before: "Una web bonita",
-    after: "Un sistema que atrae clientes ideales",
-  },
-  {
-    icon: TrendingUp,
-    before: "Páginas estáticas",
-    after: "Embudos de conversión activos 24/7",
-  },
-  {
-    icon: Users,
-    before: "Visitas sin rumbo",
-    after: "Prospectos calificados que agendan contigo",
-  },
-  {
-    icon: BarChart3,
-    before: "Diseño sin métricas",
-    after: "Resultados medibles desde el día uno",
-  },
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { images, t } from "@/config/site";
+import type { Lang } from "@/config/site";
+
+const whyIcons = [
+  <svg key="1" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
+  <svg key="2" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>,
+  <svg key="3" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>,
+  <svg key="4" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
 ];
 
-export function ValueProp() {
+interface WhyUsProps {
+  lang: Lang;
+}
+
+export function ValueProp({ lang }: WhyUsProps) {
+  const tr = t[lang];
+
   return (
-    <section id="nosotros" className="py-20 sm:py-28">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Encabezado */}
-        <AnimateIn className="text-center mb-16 max-w-3xl mx-auto">
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest mb-4 block">
-            Nuestra propuesta de valor
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6">
-            No construimos webs.{" "}
-            <span className="text-primary">
-              Construimos sistemas de captación de clientes.
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Cada proyecto que entregamos está diseñado con un único objetivo:
-            convertir visitantes desconocidos en clientes que confían en ti y
-            quieren trabajar contigo.
-          </p>
-        </AnimateIn>
-
-        {/* Comparativa antes / después */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          {differentiators.map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <AnimateIn key={item.before} delay={i * 0.1}>
-                <div className="flex items-start gap-4 p-6 rounded-xl border border-border hover:border-primary/30 hover:bg-muted/30 transition-all">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon size={20} className="text-primary" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground line-through">
-                      {item.before}
-                    </p>
-                    <p className="text-base font-semibold text-foreground">
-                      {item.after}
-                    </p>
-                  </div>
+    <section className="jv-section">
+      <div className="jv-container">
+        <div className="jv-why-grid">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="jv-why-img-stack">
+              <Image
+                src={images.worker}
+                alt="JV crew at work"
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+              <Image
+                src={images.stone1}
+                alt="Stonework detail"
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 1024px) 100vw, 30vw"
+              />
+              <div className="jv-why-stamp">
+                <div>
+                  <em>20+</em>
+                  <small>{lang === "en" ? "Years" : "Años"}</small>
                 </div>
-              </AnimateIn>
-            );
-          })}
-        </div>
+              </div>
+            </div>
+          </motion.div>
 
-        {/* Declaración central */}
-        <AnimateIn>
-          <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 sm:p-12 text-center">
-            <p className="text-xl sm:text-2xl font-semibold text-foreground leading-relaxed max-w-3xl mx-auto">
-              &ldquo;Tu web no existe para verse bien. Existe para{" "}
-              <span className="text-primary">generar conversaciones</span>,{" "}
-              <span className="text-primary">calificar prospectos</span> y{" "}
-              <span className="text-primary">llenar tu agenda</span> con
-              clientes que ya quieren lo que ofreces.&rdquo;
-            </p>
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="jv-eyebrow">{tr.sections.why.eyebrow}</div>
+            </motion.div>
+            <motion.h2
+              className="jv-h2"
+              style={{ whiteSpace: "pre-line" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              {tr.sections.why.title}
+            </motion.h2>
+            <motion.p
+              className="jv-sub"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {tr.sections.why.sub}
+            </motion.p>
+
+            <div className="jv-why-list">
+              {tr.why.map((w, i) => (
+                <motion.div
+                  key={i}
+                  className="jv-why-item"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                >
+                  <div className="jv-why-icon">{whyIcons[i]}</div>
+                  <div>
+                    <div className="jv-why-t">{w.t}</div>
+                    <div className="jv-why-d">{w.d}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </AnimateIn>
+        </div>
       </div>
     </section>
   );
