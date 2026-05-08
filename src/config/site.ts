@@ -71,10 +71,10 @@ export const images = {
   landscape1: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80",
   beforeAfter: [
     {
-      before: "https://images.unsplash.com/photo-1598902108854-10e335adac99?w=1400&q=80",
-      after: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=80",
-      labelEn: "Annapolis backyard · 1,200 sq ft paver patio + fire pit",
-      labelEs: "Patio trasero en Annapolis · 1,200 pies² de adoquín + fogata",
+      before: "/images/projects/antes1.png",
+      after: "/images/projects/despues1.jpeg",
+      labelEn: "Project by JV Patios & Stonework",
+      labelEs: "Proyecto de JV Patios & Stonework",
     },
     {
       before: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1400&q=80",
