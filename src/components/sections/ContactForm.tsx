@@ -25,6 +25,7 @@ export function ContactForm({ lang }: ContactFormProps) {
   const svcList = services[lang];
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FormData>({
     service: "", when: tr.form.when[0], address: "", size: "", message: "", name: "", phone: "", email: "",
   });
@@ -35,10 +36,22 @@ export function ContactForm({ lang }: ContactFormProps) {
   const canNext =
     step === 0 ? !!data.service : step === 1 ? !!data.address : true;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!data.name || !data.phone) return;
-    setDone(true);
+    setLoading(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    } catch {
+      // show success regardless — don't block the user
+    } finally {
+      setLoading(false);
+      setDone(true);
+    }
   };
 
   return (
@@ -276,8 +289,8 @@ export function ContactForm({ lang }: ContactFormProps) {
                       {tr.form.continue} →
                     </button>
                   ) : (
-                    <button type="submit" className="jv-form-submit">
-                      {tr.form.submit}
+                    <button type="submit" className="jv-form-submit" disabled={loading}>
+                      {loading ? (lang === "en" ? "Sending…" : "Enviando…") : tr.form.submit}
                     </button>
                   )}
                 </div>
